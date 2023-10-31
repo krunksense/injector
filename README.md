@@ -1,1 +1,3 @@
-<h1>KRUNK<span style="color:#8bff00">SENSE</span> INJECTOR</h1>
+# KRUNKSENSE INJECTOR
+
+You are probably looking for the download, click [here](releases).
