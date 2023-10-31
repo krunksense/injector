@@ -1,0 +1,22 @@
+{
+	"name": "vn0a7945g7q894",
+	"main": "js/index.js",
+	"devDependencies": {
+		"@types/adm-zip": "^0.5.2",
+		"@types/node": "^20.8.6",
+		"electron": "^27.0.0",
+		"typescript": "^5.2.2"
+	},
+	"scripts": {
+		"build": "npx tsc",
+		"run": "npx tsc && npx electron .",
+		"debug": "npx tsc && npx electron --inspect ."
+	},
+	"dependencies": {
+		"@electron/asar": "^3.2.7",
+		"@electron/remote": "^2.0.12",
+		"adm-zip": "^0.5.10",
+		"discord-rpc-revamp": "^2.0.2",
+		"electron-store": "^8.1.0"
+	}
+}

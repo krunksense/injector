@@ -1,0 +1,56 @@
+<head>
+    <title>Krunksense</title>
+</head>
+
+<body>
+    <div class="title">Krunk<span style="color:#bfff00">sense</span></div>
+    <div class="subtitle">Fetching cheat, please wait...</div>
+    <div class="spinner"></div>
+</body>
+<style>
+    @font-face {
+        font-family: ksText;
+        src: url(./font.ttf);
+    }
+
+    body {
+        margin: 0;
+        background-color: #202020;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .title,
+    .subtitle {
+        font-family: ksText, monospace;
+        color: #fff;
+    }
+
+    .title {
+        -webkit-app-region: drag;
+        font-size: 50px;
+        margin: 10px 0;
+    }
+
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 5px dashed #bfff00;
+        border-radius: 50%;
+        animation: spin 1s infinite;
+        margin-top: 15px;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }        
+    }
+</style>

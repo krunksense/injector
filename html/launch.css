@@ -1,0 +1,85 @@
+@font-face {
+    font-family: ksText;
+    src: url(./font.ttf);
+}
+
+* {
+    user-select: none;
+}
+
+body {
+    margin: 0;
+    background-color: #202020;
+}
+
+#launch {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.title {
+    font-family: ksText, monospace;
+    color: #fff;
+    -webkit-app-region: drag;
+    font-size: 50px;
+    margin: 20px;
+}
+
+.log {
+    width: calc(100% - 60px);
+    height: 100%;
+    margin: 20px;
+    margin-top: 0;
+    padding: 10px;
+    background: #303030;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.logItem {
+    padding: 10px;
+    font-family: ksText, monospace;
+    color: #fff;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logItem::before {
+    content: "";
+    font-size: 20px;
+    height: 17px;
+    width: 17px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    transition: .5s;
+}
+
+.logItem.progress::before {
+    border-style: dashed;
+    animation: spin 1s infinite;
+}
+
+.logItem.done::before, .logItem.error::before {
+    border-style: solid;
+    background: #bfff00;
+    border-color: #bfff00;
+}
+
+.logItem.error::before {
+    background: #ff0000;
+    border-color: #ff0000;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

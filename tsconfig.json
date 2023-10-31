@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "outDir": "js",
+        "baseUrl": "src",
+        "esModuleInterop": true,
+        "target": "esnext",
+        "moduleResolution": "node",
+        "module": "commonjs"
+    }
+}

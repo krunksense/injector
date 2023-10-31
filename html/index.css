@@ -1,0 +1,131 @@
+@font-face {
+    font-family: ksText;
+    src: url(./font.ttf);
+}
+
+body {
+    margin: 0;
+    background-color: #202020;
+}
+
+#loading, #clients {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#loading {
+    justify-content: center;
+}
+
+.title, .subtitle {
+    font-family: ksText, monospace;
+    color: #fff;
+}
+
+.title {
+    -webkit-app-region: drag;
+    font-size: 50px;
+    margin: 10px 0;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 5px dashed #bfff00;
+    border-radius: 50%;
+    animation: spin 1s infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+* {
+    user-select: none;
+}
+
+#clientList {
+    width: calc(100% - 60px);
+    height: 100%;
+    margin: 20px;
+    padding: 10px;
+    color: #fff;
+    font-family: ksText, monospace;
+    text-align: center;
+    font-size: 30px;
+    background: #303030;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+
+#clientList::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: #303030;
+}
+
+#clientList::-webkit-scrollbar-thumb {
+    background: #bfff00;
+    border-radius: 0;
+}
+
+.addClient, .client {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding: 10px;
+    background: #202020;
+    border-radius: 5px;
+    transition: .5s;
+}
+
+.client {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.client .launch {
+    margin-left: auto;
+}
+
+.client .launch, .client .delete {
+    font-size: 50px;
+    transition: .5s;
+}
+
+.client .launch:hover, .client .delete:hover {
+    color: #bfff00;
+    cursor: pointer;
+}
+
+.addClient:hover {
+    color: #bfff00;
+    background: #404040;
+    cursor: pointer;
+}
+
+#linkDiscord span {
+    transform: rotate(-45deg);
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+#linkDiscord {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#linkDiscord[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}

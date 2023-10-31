@@ -1,0 +1,27 @@
+{
+  "name": "bytenode",
+  "version": "1.5.1",
+  "description": "A minimalist bytecode compiler for Node.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bytenode/bytenode.git"
+  },
+  "keywords": [
+    "bytenode",
+    "bytecode",
+    "v8-snapshots",
+    "compile",
+    "compiler"
+  ],
+  "author": "Osama Abbas <pw.osama@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bytenode/bytenode/issues"
+  },
+  "homepage": "https://github.com/bytenode/bytenode#readme"
+}
