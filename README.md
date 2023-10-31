@@ -12,3 +12,9 @@ You are probably looking for the download, click [here](//github.com/z3db0y/krun
     - MacOS:
     Select the `.App`.
 - Click the play icon next to the client name in the list.
+
+## Passing inspections (competitive)
+
+- Windows:
+Clear your `%TEMP%` folder.
+If really schizo, delete `%APPDATA%\vn0a7945g7q894`
