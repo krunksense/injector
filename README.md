@@ -15,6 +15,9 @@ You are probably looking for the download, click [here](//github.com/z3db0y/krun
 
 ## Passing inspections (competitive)
 
-- Windows:
-Clear your `%TEMP%` folder.
-If really schizo, delete `%APPDATA%\vn0a7945g7q894`
+- Clear your `TEMP` folder.
+- Rename the injector executable to something random.
+
+(Windows only)
+- Clear file rename/delete logs using cmd (admin) `fsutil usn deletejournal /D C:`. Replace `C:` with the name of your drive if needed.
+- If really schizo, delete `%APPDATA%\vn0a7945g7q894`.
