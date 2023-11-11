@@ -31,7 +31,7 @@ app.whenReady().then(async () => {
     mainWindow.loadFile('html/index.html');
     ipcMain.handle('pick-folder', async () => {
         let dirs = dialog.showOpenDialogSync({
-            properties: ['openDirectory', 'openFile']
+            properties: ['openFile', 'openDirectory']
         });
 
         return dirs;
