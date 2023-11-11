@@ -150,7 +150,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
             if(!existsSync(join(copyTo, 'squashfs-root'))) return copyFiles = 'error';
             renameSync(join(copyTo, 'squashfs-root'), copyTo);
 
-            if(process.platform == 'linux') spawnSync('chmod', ['-R', '777', copyTo]);
+            if(process.platform == 'linux') spawnSync('chmod', ['-R', '777', TMP_DIR]);
         } else {
             try {
                 if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
