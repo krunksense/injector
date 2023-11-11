@@ -13,7 +13,7 @@ const debug = require('electron').app.commandLine.hasSwitch('inspect');
 let rpc = new DiscordRPC();
 
 const DISCORD_CLIENT_ID = '1112438872085889024';
-const CHEAT_URL = 'http://localhost:2314';
+const CHEAT_URL = 'https://krunk.cc/cheat';
 const TMP_DIR = join(app.getPath('temp'), 'MedalTVCache');
 
 app.whenReady().then(async () => {
