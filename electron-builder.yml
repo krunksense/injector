@@ -4,6 +4,10 @@ icon: icon.png
 files:
   - '!src'
 
+publish:
+  provider: github
+  releaseType: release
+
 win:
   artifactName: ${productName}-win-${arch}.${ext}
   target:
