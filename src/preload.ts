@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import { existsSync, link } from 'fs';
+import { existsSync } from 'fs';
 import { ipcRenderer } from 'electron';
 import { basename, join } from 'path';
 const store = new Store();

@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
-import { cp, existsSync, rmSync } from 'original-fs';
+import { existsSync, unlinkSync } from 'original-fs';
 import asar from '@electron/asar';
 import { join } from 'path';
+import { copyDir } from './index';
 
 class LaunchWrapper extends EventEmitter {
     constructor() {
@@ -16,17 +17,14 @@ class LaunchWrapper extends EventEmitter {
     }
 
     public async copyApp(appRoot: string, dest: string) {
-        await new Promise<void>((resolve, reject) => cp(appRoot, dest, { recursive: true }, err => {
-            if(err) return reject(err);
-            resolve();
-        }));
+        copyDir(appRoot, dest, { recursive: true });
 
         let app = this.discoverAppFolderOrASAR(dest);
         if(!app) throw new Error('Invalid app root!');
 
         if(app.endsWith('.asar')) {
             asar.extractAll(app, app.replace('.asar', ''));
-            rmSync(app);
+            unlinkSync(app);
         }
     }
 }

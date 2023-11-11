@@ -3,7 +3,7 @@ import Store from 'electron-store';
 import launchWrapper from './launchWrapper';
 import { basename, extname, join } from 'path';
 import { spawn, spawnSync } from 'child_process';
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync } from 'original-fs';
 import asar from '@electron/asar';
 import { readdirSync } from 'fs';
 import { Client as DiscordRPC } from 'discord-rpc-revamp';
@@ -92,6 +92,18 @@ app.whenReady().then(async () => {
     });
 });
 
+export function copyDir(src: string, dest: string, options: { recursive: boolean }) {
+    let dir = readdirSync(src, { withFileTypes: true });
+    for(let d of dir) {
+        if(d.isDirectory()) {
+            mkdirSync(join(dest, d.name), { recursive: options.recursive });
+            copyDir(join(src, d.name), join(dest, d.name), options);
+        } else {
+            writeFileSync(join(dest, d.name), readFileSync(join(src, d.name)));
+        }
+    }
+}
+
 function doLaunch(info: any, launchWindow: BrowserWindow) {
     let killOld = 'progress';
     let copyFiles = '';
@@ -131,7 +143,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
 
         let copyTo = join(TMP_DIR, info.name || 'unknown');
         try {
-            if(existsSync(copyTo)) rmSync(copyTo, { recursive: true });
+            if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
             mkdirSync(copyTo, { recursive: true });
             await launchWrapper.copyApp(info.path, copyTo);
             copyFiles = 'done';
@@ -160,7 +172,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
             writeFileSync(join(appRoot, 'package.json'), JSON.stringify(packageJSON, null, 4));
             mkdirSync(join(appRoot, dirname));
             writeFileSync(join(appRoot, dirname, 'package.json'), oldPackageJSON);
-            cpSync(join(__dirname, '../inject'), join(appRoot, dirname), { recursive: true });
+            copyDir(join(__dirname, '../inject'), join(appRoot, dirname), { recursive: true });
             inject = 'done';
             launchWindow.webContents.send('update-progress', 'inject', inject);
         } catch(e) {
@@ -176,7 +188,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
         
         try {
             await asar.createPackage(appRoot, appRoot + '.asar');
-            rmSync(appRoot, { recursive: true });
+            rmdirSync(appRoot, { recursive: true });
             repack = 'done';
             launchWindow.webContents.send('update-progress', 'repack', repack);
         } catch(e) {
