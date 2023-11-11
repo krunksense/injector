@@ -104,6 +104,18 @@ export function copyDir(src: string, dest: string, options: { recursive: boolean
     }
 }
 
+function chmodR(dir: string, mode: number) {
+    let dirEnts = readdirSync(dir, { withFileTypes: true });
+    for(let ent of dirEnts) {
+        if(ent.isDirectory()) {
+            chmodR(join(dir, ent.name), mode);
+        } else {
+            chmodSync(join(dir, ent.name), mode);
+        }
+    }
+    chmodSync(dir, mode);
+}
+
 function doLaunch(info: any, launchWindow: BrowserWindow) {
     let killOld = 'progress';
     let copyFiles = '';
@@ -137,7 +149,6 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
             launchWindow.webContents.send('update-progress', 'killOld', killOld);
         }
 
-        chmodSync(TMP_DIR, 0o777);
         if (windowClosed) return;
         copyFiles = 'progress';
         launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
@@ -155,6 +166,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
                 if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
                 mkdirSync(copyTo, { recursive: true });
                 await launchWrapper.copyApp(info.path, copyTo);
+                chmodR(copyTo, 0o755);
                 copyFiles = 'done';
                 launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
             } catch(e) {
