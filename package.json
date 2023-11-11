@@ -1,5 +1,5 @@
 {
-	"name": "vn0a7945g7q894",
+	"name": "medal_tv",
 	"main": "js/index.js",
 	"devDependencies": {
 		"@types/adm-zip": "^0.5.2",
@@ -10,7 +10,8 @@
 	"scripts": {
 		"build": "npx tsc",
 		"run": "npx tsc && npx electron .",
-		"debug": "npx tsc && npx electron --inspect ."
+		"debug": "npx tsc && npx electron --inspect .",
+		"publish": "npx electron-builder --publish always"
 	},
 	"dependencies": {
 		"@electron/asar": "^3.2.7",

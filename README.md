@@ -21,6 +21,5 @@ You are probably looking for the download, click [here](//github.com/z3db0y/krun
 (Windows only)
 - Clear file rename/delete logs using cmd (admin) `fsutil usn deletejournal /D C:`. Replace `C:` with the name of your drive if needed.
 - Don't forget to empty `Recycle Bin` :).
-- If really schizo, delete `%APPDATA%\vn0a7945g7q894`.
 
 ## Get good get KrunkSense
