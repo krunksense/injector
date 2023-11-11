@@ -6,6 +6,7 @@
 		"@types/adm-zip": "^0.5.2",
 		"@types/node": "^20.8.6",
 		"electron": "^27.0.0",
+		"electron-builder": "^24.6.4",
 		"typescript": "^5.2.2"
 	},
 	"scripts": {
