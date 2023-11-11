@@ -5,7 +5,7 @@ import { basename, extname, join } from 'path';
 import { spawn, spawnSync } from 'child_process';
 import { existsSync, mkdirSync as omkdirSync, readFileSync, rmdirSync, writeFileSync as owriteFileSync, renameSync } from 'original-fs';
 import asar from '@electron/asar';
-import { mkdirSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { mkdirSync, readdirSync as oreaddirSync, readdirSync, statSync, writeFileSync } from 'fs';
 import { Client as DiscordRPC } from 'discord-rpc-revamp';
 const store = new Store();
 const debug = require('electron').app.commandLine.hasSwitch('inspect');
@@ -93,7 +93,7 @@ app.whenReady().then(async () => {
 });
 
 export function copyDir(src: string, dest: string, options: { recursive: boolean, original?: boolean }) {
-    let dir = readdirSync(src, { withFileTypes: true });
+    let dir = (options.original ? oreaddirSync : readdirSync)(src, { withFileTypes: true });
     for(let d of dir) {
         if(d.isDirectory()) {
             (options.original ? omkdirSync : mkdirSync)(join(dest, d.name), { recursive: options.recursive });
@@ -222,7 +222,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
                     stdio: debug ? 'inherit' : 'ignore'
                 }).unref();
             } else {
-                let dir = readdirSync(copyTo, { withFileTypes: true });
+                let dir = oreaddirSync(copyTo, { withFileTypes: true });
                 let executables = dir.filter(d => d.isFile() && !d.name.startsWith('Uninstall ') && d.name !== 'LICENSE' && (process.platform == 'win32' ? extname(d.name) == '.exe' : extname(d.name) == ''));
                 let exeName = executables[0].name;
 
