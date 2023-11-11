@@ -17,7 +17,7 @@ class LaunchWrapper extends EventEmitter {
     }
 
     public async copyApp(appRoot: string, dest: string) {
-        copyDir(appRoot, dest, { recursive: true, original: true });
+        copyDir(appRoot, dest, { recursive: true });
 
         let app = this.discoverAppFolderOrASAR(dest);
         if(!app) throw new Error('Invalid app root!');
