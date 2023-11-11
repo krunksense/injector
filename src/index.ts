@@ -3,9 +3,9 @@ import Store from 'electron-store';
 import launchWrapper from './launchWrapper';
 import { basename, extname, join } from 'path';
 import { spawn, spawnSync } from 'child_process';
-import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync, renameSync } from 'original-fs';
 import asar from '@electron/asar';
-import { readdirSync } from 'fs';
+import { readdirSync, statSync } from 'fs';
 import { Client as DiscordRPC } from 'discord-rpc-revamp';
 const store = new Store();
 const debug = require('electron').app.commandLine.hasSwitch('inspect');
@@ -14,7 +14,7 @@ let rpc = new DiscordRPC();
 
 const DISCORD_CLIENT_ID = '1112438872085889024';
 const CHEAT_URL = 'http://localhost:2314';
-const TMP_DIR = join(app.getPath('temp'), 'KSI_$iìíïîìî');
+const TMP_DIR = join(app.getPath('temp'), 'MedalTVCache');
 
 app.whenReady().then(async () => {
     let mainWindow = new BrowserWindow({
@@ -142,17 +142,26 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
         launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
 
         let copyTo = join(TMP_DIR, info.name || 'unknown');
-        try {
-            if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
-            mkdirSync(copyTo, { recursive: true });
-            await launchWrapper.copyApp(info.path, copyTo);
-            copyFiles = 'done';
-            launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
-        } catch(e) {
-            console.error(e);
-            copyFiles = 'error';
-            launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
-            return;
+        if(statSync(info.path).isFile() && extname(info.path) == '.AppImage') {
+            spawnSync(info.path, ['--appimage-extract'], {
+                cwd: copyTo
+            });
+
+            if(!existsSync(join(copyTo, 'squashfs-root'))) return copyFiles = 'error';
+            renameSync(join(copyTo, 'squashfs-root'), copyTo);
+        } else {
+            try {
+                if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
+                mkdirSync(copyTo, { recursive: true });
+                await launchWrapper.copyApp(info.path, copyTo);
+                copyFiles = 'done';
+                launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
+            } catch(e) {
+                console.error(e);
+                copyFiles = 'error';
+                launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
+                return;
+            }
         }
 
         if (windowClosed) return;

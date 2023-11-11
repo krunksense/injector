@@ -1,7 +1,7 @@
 import Store from 'electron-store';
-import { existsSync } from 'fs';
+import { existsSync, statSync } from 'fs';
 import { ipcRenderer } from 'electron';
-import { basename, join } from 'path';
+import { basename, extname, join } from 'path';
 const store = new Store();
 
 enum DiscordStatus {
@@ -136,7 +136,7 @@ function initApp() {
         let dir = await ipcRenderer.invoke('pick-folder');
         if(!dir[0]) return;
         let path = dir[0];
-        let validApp = existsSync(join(path, 'resources', 'app.asar')) || existsSync(join(path, 'resources', 'app'));
+        let validApp = existsSync(join(path, 'resources', 'app.asar')) || existsSync(join(path, 'resources', 'app')) || (existsSync(path) && statSync(path).isFile() && extname(path) == '.AppImage');
         let validAppMac = existsSync(join(path, 'Contents', 'Resources', 'app.asar'));
 
         if(!validApp && !validAppMac) return await ipcRenderer.invoke('dialog', false, 'This is not a valid client!');
