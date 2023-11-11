@@ -8,10 +8,12 @@ You are probably looking for the download, click [here](//github.com/z3db0y/krun
     - Windows:
     Find the client folder. It should contain the client `exe` and a `resources`` folder.
     - Linux:
-    Find the `AppImage` or the client folder (will have a `resources` folder inside).
+    Find the client folder (will have a `resources` folder inside). If you have an AppImage, open a terminal and run the AppImage with `--appimage-extract`, which will create a new folder that you can add to the injector.
     - MacOS:
     Select the `.App`.
 - Click the play icon next to the client name in the list.
+
+
 
 ## Passing inspections (competitive)
 
