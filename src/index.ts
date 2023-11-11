@@ -236,7 +236,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
                 }).unref();
             } else {
                 let dir = readdirSync(copyTo, { withFileTypes: true });
-                let executables = dir.filter(d => d.isFile() && !d.name.startsWith('Uninstall ') && d.name !== 'LICENSE' && (process.platform == 'win32' ? extname(d.name) == '.exe' : extname(d.name) == ''));
+                let executables = dir.filter(d => d.isFile() && !['license', '.diricon', 'apprun', 'chrome-sandbox'].includes(d.name.toLowerCase()) && !d.name.startsWith('Uninstall ') && (process.platform == 'win32' ? extname(d.name) == '.exe' : extname(d.name) == ''));
                 let exeName = executables[0].name;
 
                 spawn(join(copyTo, exeName), launchArgs, {
