@@ -31,11 +31,7 @@ app.whenReady().then(async () => {
     mainWindow.loadFile('html/index.html');
     ipcMain.handle('pick-folder', async () => {
         let dirs = dialog.showOpenDialogSync({
-            properties: ['openDirectory', 'openFile'],
-            filters: [
-                { name: 'Client Binary', extensions: ['AppImage'] },
-                { name: 'Directories', extensions: ['*'] }
-            ]
+            properties: ['openDirectory', 'openFile']
         });
 
         return dirs;
@@ -245,4 +241,6 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
     });
 }
 
+
+app.commandLine.appendSwitch('no-sandbox');
 process.noAsar = true;
