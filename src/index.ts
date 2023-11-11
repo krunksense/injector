@@ -3,9 +3,9 @@ import Store from 'electron-store';
 import launchWrapper from './launchWrapper';
 import { basename, extname, join } from 'path';
 import { spawn, spawnSync } from 'child_process';
-import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync, renameSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync, renameSync, chmodSync } from 'original-fs';
 import asar from '@electron/asar';
-import { chmodSync, readdirSync, statSync } from 'fs';
+import { readdirSync, statSync } from 'fs';
 import { Client as DiscordRPC } from 'discord-rpc-revamp';
 const store = new Store();
 const debug = require('electron').app.commandLine.hasSwitch('inspect');
@@ -137,6 +137,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
             launchWindow.webContents.send('update-progress', 'killOld', killOld);
         }
 
+        chmodSync(TMP_DIR, 0o777);
         if (windowClosed) return;
         copyFiles = 'progress';
         launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
@@ -149,8 +150,6 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
 
             if(!existsSync(join(copyTo, 'squashfs-root'))) return copyFiles = 'error';
             renameSync(join(copyTo, 'squashfs-root'), copyTo);
-
-            if(process.platform == 'linux') chmodSync(TMP_DIR, 0o777);
         } else {
             try {
                 if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
