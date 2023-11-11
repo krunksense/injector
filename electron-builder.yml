@@ -1,4 +1,5 @@
 productName: 789ynmdh46e
+asar: false
 
 files:
   - '!src'

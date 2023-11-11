@@ -3,9 +3,9 @@ import Store from 'electron-store';
 import launchWrapper from './launchWrapper';
 import { basename, extname, join } from 'path';
 import { spawn, spawnSync } from 'child_process';
-import { existsSync, mkdirSync as omkdirSync, readFileSync, rmdirSync, writeFileSync as owriteFileSync, renameSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, rmdirSync, writeFileSync, renameSync } from 'original-fs';
 import asar from '@electron/asar';
-import { mkdirSync, readdirSync as oreaddirSync, readdirSync, statSync, writeFileSync } from 'fs';
+import { readdirSync, statSync } from 'fs';
 import { Client as DiscordRPC } from 'discord-rpc-revamp';
 const store = new Store();
 const debug = require('electron').app.commandLine.hasSwitch('inspect');
@@ -31,7 +31,7 @@ app.whenReady().then(async () => {
     mainWindow.loadFile('html/index.html');
     ipcMain.handle('pick-folder', async () => {
         let dirs = dialog.showOpenDialogSync({
-            properties: ['openFile', 'openDirectory']
+            properties: ['openDirectory']
         });
 
         return dirs;
@@ -92,14 +92,14 @@ app.whenReady().then(async () => {
     });
 });
 
-export function copyDir(src: string, dest: string, options: { recursive: boolean, original?: boolean }) {
-    let dir = (options.original ? oreaddirSync : readdirSync)(src, { withFileTypes: true });
+export function copyDir(src: string, dest: string, options: { recursive: boolean }) {
+    let dir = readdirSync(src, { withFileTypes: true });
     for(let d of dir) {
         if(d.isDirectory()) {
-            (options.original ? omkdirSync : mkdirSync)(join(dest, d.name), { recursive: options.recursive });
+            mkdirSync(join(dest, d.name), { recursive: options.recursive });
             copyDir(join(src, d.name), join(dest, d.name), options);
         } else {
-            (options.original ? owriteFileSync : writeFileSync)(join(dest, d.name), readFileSync(join(src, d.name)));
+            writeFileSync(join(dest, d.name), readFileSync(join(src, d.name)));
         }
     }
 }
@@ -152,7 +152,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
         } else {
             try {
                 if(existsSync(copyTo)) rmdirSync(copyTo, { recursive: true });
-                omkdirSync(copyTo, { recursive: true });
+                mkdirSync(copyTo, { recursive: true });
                 await launchWrapper.copyApp(info.path, copyTo);
                 copyFiles = 'done';
                 launchWindow.webContents.send('update-progress', 'copyFiles', copyFiles);
@@ -178,9 +178,9 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
             let packageJSON = JSON.parse(oldPackageJSON);
             oldMain = packageJSON.main;
             packageJSON.main = dirname + '/bootstrap.js';
-            owriteFileSync(join(appRoot, 'package.json'), JSON.stringify(packageJSON, null, 4));
-            omkdirSync(join(appRoot, dirname));
-            owriteFileSync(join(appRoot, dirname, 'package.json'), oldPackageJSON);
+            writeFileSync(join(appRoot, 'package.json'), JSON.stringify(packageJSON, null, 4));
+            mkdirSync(join(appRoot, dirname));
+            writeFileSync(join(appRoot, dirname, 'package.json'), oldPackageJSON);
             copyDir(join(__dirname, '../inject'), join(appRoot, dirname), { recursive: true });
             inject = 'done';
             launchWindow.webContents.send('update-progress', 'inject', inject);
@@ -222,7 +222,7 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
                     stdio: debug ? 'inherit' : 'ignore'
                 }).unref();
             } else {
-                let dir = oreaddirSync(copyTo, { withFileTypes: true });
+                let dir = readdirSync(copyTo, { withFileTypes: true });
                 let executables = dir.filter(d => d.isFile() && !d.name.startsWith('Uninstall ') && d.name !== 'LICENSE' && (process.platform == 'win32' ? extname(d.name) == '.exe' : extname(d.name) == ''));
                 let exeName = executables[0].name;
 
@@ -241,6 +241,4 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
     });
 }
 
-
-app.commandLine.appendSwitch('no-sandbox');
 process.noAsar = true;
