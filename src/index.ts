@@ -240,7 +240,8 @@ function doLaunch(info: any, launchWindow: BrowserWindow) {
                 let exeName = executables[0].name;
 
                 spawn(join(copyTo, exeName), launchArgs, {
-                    stdio: debug ? 'inherit' : 'ignore'
+                    stdio: debug ? 'inherit' : 'ignore',
+                    detached: !debug
                 }).unref();
             }
 
