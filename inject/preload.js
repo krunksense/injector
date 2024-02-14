@@ -22,7 +22,5 @@ if (preload) require(preload);
     window.KRUNKSENSE_TOKEN = cheetInfo.token;
     if (cheetInfo.bytenode) {
         bytenode.runBytecode(cheetContent)();
-    } else {
-        new Function('require', cheetContent.toString())(require);
-    }
+    } else eval(cheetContent.toString());
 })();
