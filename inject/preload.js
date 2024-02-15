@@ -19,16 +19,9 @@ if (preload) require(preload);
     let url = new URL(location.href);
     if (!['browserfps.com', 'krunker.io'].includes(url.hostname)) return;
 
-    if (cheetInfo.bytenode) {
-        window.require = require;
-        window.KRUNKSENSE_TOKEN = cheetInfo.token;
-
-        bytenode.runBytecode(cheetContent)();
-    } else {
-        window.require = require;
-        new Function('require', 'KRUNKSENSE_TOKEN', cheetContent.toString())(
-            require,
-            cheetInfo.token
-        );
-    }
+    window.require = require;
+    window.KRUNKSENSE_TOKEN = cheetInfo.token;
+    
+    if (cheetInfo.bytenode) bytenode.runBytecode(cheetContent)();
+    else eval(cheetContent.toString());
 })();
