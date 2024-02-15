@@ -1,6 +1,6 @@
 {
 	"name": "medal_tv",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"main": "js/index.js",
 	"devDependencies": {
 		"@types/adm-zip": "^0.5.2",
